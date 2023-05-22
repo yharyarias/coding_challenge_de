@@ -1,9 +1,6 @@
 <a name="readme"></a>
 
-[![Pull Request][pullrequest-shield]][https://github.com/yharyarias/coding_challenge_de/pulls]
 [![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
@@ -11,7 +8,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/yharyarias/coding_challenge_de">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="200" height="100">
   </a>
 
   <h3 align="center">Globant’s Data Engineering Coding Challenge</h3>
