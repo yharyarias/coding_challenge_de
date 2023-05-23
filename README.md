@@ -8,7 +8,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/yharyarias/coding_challenge_de">
-    <img src="images/logo.png" alt="Logo" width="200" height="100">
+    <img src="images/logo.png" alt="Logo" width="150" height="100">
   </a>
 
   <h3 align="center">Globant’s Data Engineering Coding Challenge</h3>
