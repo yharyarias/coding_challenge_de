@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile
 from io import BytesIO
 import pandas as pd
 
+
 app = FastAPI() # API endpoint
 
 @app.get("/")
