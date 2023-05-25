@@ -1,6 +1,7 @@
-FROM python:3.11-slim
-ENV APP_HOME=/app
-WORKDIR $APP_HOME
-COPY . ./
-RUN pip install -r requirements.txt
-CMD exec gunicorn --bind :$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker  --threads 8 app.main:app
+FROM python:3.11
+WORKDIR /coding_challenge_de
+COPY ./requirements.txt /coding_challenge_de/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /coding_challenge_de/requirements.txt
+RUN pip install fastapi uvicorn
+COPY ./app /coding_challenge_de/app
+CMD ["uvicorn", "app.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
