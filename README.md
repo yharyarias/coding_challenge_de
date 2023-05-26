@@ -52,26 +52,26 @@ Below are the instructions and requirements to execute the project.
 
 ### Prerequisites
 
-Antes de iniciar es necesario crear un ambiente virtual, se recomienda hacerlo con PIPENV, ubicandose en la raiz del proyecto. El siguiente comando generará el ambiente automanticamente.
+Before starting it is necessary to create a virtual environment, it is recommended to do it with PIPENV, located in the root of the project. The following command will generate the environment automatically.
 
 * shell
   ```sh
   pipenv shell
   ```
 
-Descargue los paquetes del archivo requirements.txt
+Download the packages from the requirements.txt file
 * shell
   ```sh
   pip install -r requirements.txt
   ```
 ## RUN API
-Es momento de corre el API de forma local
+It is time to run the API, first we will test it locally then on GCP
 * shell
   ```sh
   uvicorn main:app --reload
   ```
 ## Run Docker container 
-También puedes ejecutar el contenedor donde se almacenó el API (debe funcionar igual que ejecutar directamente el API). 
+You can also run the container where the API is stored (should work the same as running the API directly).
 * shell
   ```sh
   uvicorn main:app --reload
@@ -167,9 +167,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Yhary Arias - [@yharyarias](https://www.linkedin.com/in/yharyarias/)
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Email: yharystefa@gmail.com
+
+Bucaramanga, Colombia
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -194,15 +196,6 @@ Use this space to list resources you find helpful and would like to give credit 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-url]: https://github.com/yharyarias/coding_challenge_de/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/yharyarias/
+[Google Cloud Run]: https://cloud.google.com/run/docs/overview/what-is-cloud-run?hl=es-419
+[Dockerfile]: https://docs.docker.com/engine/reference/builder/#dockerignore-file
+[FastAPI]: https://fastapi.tiangolo.com/
