@@ -1,12 +1,13 @@
+import os
 import mysql_helper as db
 import csv_manager as mgr
-from fastapi import FastAPI
+from data_type import DataType
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
-from data_type import DataType
+
 
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,46 +16,41 @@ app.add_middleware(
     allow_credentials=True,
 )
 
-mydb = db.MySQLHelper()
-mydb.connect()
-
-csv_manager = mgr.CSVManager()
+mydb = db.MySQLHelper()  # MySQLHelper instance
+mydb.connect()  # Establish the database connection
 
 
+csv_manager = mgr.CSVManager()  # CSVManager instance
 
 @app.get("/")
 def main():
     return RedirectResponse(url="/docs/")
 
-@app.get("/employees")
-def insertEmployees(employees):
-    try:
-        if len(employees) >= 1:
-            mydb.insertBatchEmployees(employees)
-    except Exception as e:
-        print("Error inserting data:", e)
-@app.get("/departments")
-def insertDepartmens(departments):
-    try:
-        if len(departments) >= 1:
-            mydb.insertBatchDepartments(departments)
-    except Exception as e:
-        print("Error inserting data:", e)
-@app.get("/jobs")
-def insertJobs(jobs):
-    try:
-        if len(jobs) >= 1:
-            mydb.insertBatchJobs(jobs)
-    except Exception as e:
-        print("Error inserting data:", e)
+SAVE_DIRECTORY = "data"
 
-departments = csv_manager.readCsv('data/departments.csv', DataType.DEPARTMENTS)
-insertDepartmens(departments)
 
-jobs = csv_manager.readCsv('data/jobs.csv', DataType.JOBS)
-insertJobs(jobs)
+@app.post("/upload-file/")
+async def upload_file(file: UploadFile = File(...)):
+    file_bytes = await file.read()
+    file_path = os.path.join(SAVE_DIRECTORY, file.filename)
+    
+    with open(file_path, "wb") as f:
+        f.write(file_bytes)
 
-employees = csv_manager.readCsv('data/hired_employees.csv', DataType.HIRED_EMPLOYEES)
-insertEmployees(employees)
+    csv_manager = mgr.CSVManager()
 
-mydb.disconnect()
+    print(file_path)
+    if 'departments' in file_path:
+        departments = csv_manager.readCsv(file_path, DataType.DEPARTMENTS)
+        mydb.insertBatchDepartments(departments)
+        return {"filename": file.filename, "saved_path": file_path, "departments": len(departments)}
+    elif 'jobs' in file_path:
+        jobs = csv_manager.readCsv(file_path, DataType.JOBS)
+        mydb.insertBatchJobs(jobs)
+        return {"filename": file.filename, "saved_path": file_path, "jobs": len(jobs)}
+    elif 'hired_employees' in file_path:
+        employees = csv_manager.readCsv(file_path, DataType.HIRED_EMPLOYEES)
+        mydb.insertBatchEmployees(employees)
+        return {"filename": file.filename, "saved_path": file_path, "employees": len(employees)}
+    else:
+        print("No match file")
