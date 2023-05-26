@@ -11,7 +11,7 @@ class MySQLHelper:
         self.host = "34.30.86.163"
         self.user = "challenge_client"
         self.password = "ch4ll3ng3*"
-        self.database = "challenge"
+        self.database = "globant"
         self.connection = None
         self.cursor = None
         self.batchSize = 1000

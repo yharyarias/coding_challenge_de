@@ -1,61 +1,56 @@
-from data_type import DataType
+import os
 import mysql_helper as db
 import csv_manager as mgr
+from data_type import DataType
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import RedirectResponse
+
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
 
 mydb = db.MySQLHelper()  # MySQLHelper instance
 mydb.connect()  # Establish the database connection
 
+
 csv_manager = mgr.CSVManager()  # CSVManager instance
 
-def insertEmployees(employees):
-    """
-    Insert employees data into the database.
+@app.get("/")
+def main():
+    return RedirectResponse(url="/docs/")
 
-    employees: List of employee data to insert.
-
-    """
-    try:
-        if len(employees) >= 1:
-            mydb.insertBatchEmployees(employees)  # Insert employee data in batches into the database
-    except Exception as e:
-        print("Error inserting data:", e)
-
-def insertDepartmens(departments):
-    """
-    Insert departments data into the database.
-
-    departments: List of department data to insert.
-
-    """
-    try:
-        if len(departments) >= 1:
-            mydb.insertBatchDepartments(departments)  # Insert department data in batches into the database
-    except Exception as e:
-        print("Error inserting data:", e)
-
-def insertJobs(jobs):
-    """
-    Insert jobs data into the database.
-
-    jobs: List of job data to insert.
-
-    """
-    try:
-        if len(jobs) >= 1:
-            mydb.insertBatchJobs(jobs)  # Insert job data in batches into the database
-    except Exception as e:
-        print("Error inserting data:", e)
+SAVE_DIRECTORY = "data"
 
 
-employees = csv_manager.readCsv('data/hired_employees.csv', DataType.HIRED_EMPLOYEES)  # Read employee data from a CSV file
-insertEmployees(employees)  # Insert hired_employees data into the database
+@app.post("/upload-file/")
+async def upload_file(file: UploadFile = File(...)):
+    file_bytes = await file.read()
+    file_path = os.path.join(SAVE_DIRECTORY, file.filename)
+    
+    with open(file_path, "wb") as f:
+        f.write(file_bytes)
 
+    csv_manager = mgr.CSVManager()
 
-jobs = csv_manager.readCsv('data/jobs.csv', DataType.JOBS)  # Read jobs data from a CSV file
-insertJobs(jobs)  # Insert jobs data into the database
-
-
-departments = csv_manager.readCsv('data/departments.csv', DataType.DEPARTMENTS)  # Read departments data from a CSV file
-insertDepartmens(departments)  # Insert departments data into the database
-
-mydb.disconnect()  # Close the database connection
+    print(file_path)
+    if 'departments' in file_path:
+        departments = csv_manager.readCsv(file_path, DataType.DEPARTMENTS)
+        mydb.insertBatchDepartments(departments)
+        return {"filename": file.filename, "saved_path": file_path, "departments": len(departments)}
+    elif 'jobs' in file_path:
+        jobs = csv_manager.readCsv(file_path, DataType.JOBS)
+        mydb.insertBatchJobs(jobs)
+        return {"filename": file.filename, "saved_path": file_path, "jobs": len(jobs)}
+    elif 'hired_employees' in file_path:
+        employees = csv_manager.readCsv(file_path, DataType.HIRED_EMPLOYEES)
+        mydb.insertBatchEmployees(employees)
+        return {"filename": file.filename, "saved_path": file_path, "employees": len(employees)}
+    else:
+        print("No match file")

@@ -59,7 +59,7 @@ class CSVManager:
         """
         if (data_type == DataType.HIRED_EMPLOYEES):
             # Set a default date of January 1, 2000
-            default_date = datetime(2000, 1, 1)
+            default_date = "2000-01-01T00:00:00Z"
 
             # Fill missing values in column 1 with empty string
             dataframe[1] = utils.fillStr(dataframe[1], '')
