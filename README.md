@@ -1,9 +1,5 @@
 <a name="readme"></a>
 
-[![Forks][forks-shield]][forks-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
