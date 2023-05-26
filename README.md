@@ -12,19 +12,6 @@
   </a>
 
   <h3 align="center">Globant’s Data Engineering Coding Challenge</h3>
-
-  <p align="center">
-    Welcome to Globant’s Data Engineering coding challenge!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
 </div>
 
 
@@ -56,12 +43,43 @@
   </ol>
 </details>
 
+<!-- GETTING STARTED -->
+# GETTING STARTED
+
+This project consists in the creation of an API that receives a csv extension file. A pipeline was created in which the data is preprocessed, that is to say, it is cleaned before sending it to a MySQL database hosted in GCP. After the data is sent, the API is dockerized to deploy it in GCP.
+Below are the instructions and requirements to execute the project.
+
+
+### Prerequisites
+
+Antes de iniciar es necesario crear un ambiente virtual, se recomienda hacerlo con PIPENV, ubicandose en la raiz del proyecto. El siguiente comando generará el ambiente automanticamente.
+
+* shell
+  ```sh
+  pipenv shell
+  ```
+
+Descargue los paquetes del archivo requirements.txt
+* shell
+  ```sh
+  pip install -r requirements.txt
+  ```
+## RUN API
+Es momento de corre el API de forma local
+* shell
+  ```sh
+  uvicorn main:app --reload
+  ```
+## Run Docker container 
+También puedes ejecutar el contenedor donde se almacenó el API (debe funcionar igual que ejecutar directamente el API). 
+* shell
+  ```sh
+  uvicorn main:app --reload
+  ```
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 You will find several different sections in here. Mind that:
 * You can choose which sections to solve based on your experience and available time
@@ -80,65 +98,40 @@ use and the resulting architecture, and why.
 
 
 
-### Built With
+### Section 1: API
 
-This is a list any frameworks/libraries used to data engineer project.
+In the context of a DB migration with 3 different tables (departments, jobs, employees) , create a local REST API that must:
+1. Receive historical data from CSV files
+2. Upload these files to the new DB
+3. Be able to insert batch transactions (1 up to 1000 rows) with one request
+You need to publish your code in GitHub. It will be taken into account if frequent updates are made to the repository that allow analyzing the development process. Ideally, create a markdown file for the Readme.md
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+Clarifications
+* You decide the origin where the CSV files are located.
+* You decide the destination database type, but it must be a SQL database.
+* The CSV file is comma separated.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Section 2: SQL
 
-<!-- USAGE EXAMPLES -->
-## Usage
+You need to explore the data that was inserted in the previous section. The stakeholders ask for some specific metrics they need. You should create an end-point for each requirement.
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+## Requirements
+* Number of employees hired for each job and department in 2021 divided by quarter. The table must be ordered alphabetically by department and job.
+* List of ids, name and number of employees hired of each department that hired more employees than the mean of employees hired in 2021 for all the departments, ordered by the number of employees hired (descending).
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+# Bonus Track! Cloud, Testing & Containers
+
+Add the following to your solution to make it more robust:
+* Host your architecture in any public cloud (using the services you consider more
+adequate)
+* Add automated tests to the API
+* You can use whichever library that you want
+* Different tests types, if necessary, are welcome 
+* Containerize your application
+* Create a Dockerfile to deploy the package
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
