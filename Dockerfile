@@ -1,7 +1,8 @@
 FROM python:3.11
-WORKDIR /coding_challenge_de
-COPY ./requirements.txt /coding_challenge_de/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /coding_challenge_de/requirements.txt
-RUN pip install fastapi uvicorn
-COPY ./app /coding_challenge_de/app
-CMD ["uvicorn", "app.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
+WORKDIR /app
+COPY requirements.txt .
+COPY app /app/
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
