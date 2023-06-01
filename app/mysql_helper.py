@@ -24,7 +24,9 @@ class MySQLHelper:
         data: List of employee data to be inserted.
 
         """
+        self.connect()  # Establish the database connection
         self.insert_batch_data('hired_employees', data)
+        self.disconnect()
 
     def insertBatchDepartments(self, data):
         """
@@ -33,7 +35,9 @@ class MySQLHelper:
         data: List of employee data to be inserted.
 
         """
+        self.connect()
         self.insert_batch_data('departments', data)
+        self.disconnect()
 
     def insertBatchJobs(self, data):
         """
@@ -42,7 +46,9 @@ class MySQLHelper:
         data: List of employee data to be inserted.
 
         """
+        self.connect()
         self.insert_batch_data('jobs', data)
+        self.disconnect()
 
     def insert_batch_data(self, table, data):
         """
@@ -123,3 +129,60 @@ class MySQLHelper:
         """
         query = "SELECT * FROM {}".format(table)
         return self.execute_query(query)
+    
+    def get_department_job_hires(self, year):
+         # Prepare the parameters for the stored procedure call
+        params = [year]
+
+        # Call the 'GetDepartmentJobHires' stored procedure
+        result = self.call_stored_procedure('GetDepartmentJobHires', params)
+
+        return result
+    
+    def get_departments_hired_employees(self, year):
+         # Prepare the parameters for the stored procedure call
+        params = [year]
+
+        # Call the 'GetDepartmentsHiredEmployees' stored procedure
+        result = self.call_stored_procedure('GetDepartmentsHiredEmployees', params)
+
+        return result
+    
+    def call_stored_procedure(self, procedure_name, params=None):
+        """
+        Execute stored procedure in database
+
+        procedure_name: The name of the stored procedure.
+        params: Procedure parameters
+
+        Returns:
+        result: The result of the query
+        """
+        try:
+            #connect to db
+            self.connect()
+            # Call the stored procedure with the given name and parameters
+            self.cursor.callproc(procedure_name, params)
+
+            # Initialize an empty list to store the results
+            results = []
+
+            # Iterate through the stored results
+            for result in self.cursor.stored_results():
+                # Fetch all the data from the current result set
+                result_data = result.fetchall()
+                # Extend the results list with the fetched data
+                results.extend(result_data)
+
+            # Close the cursor
+            self.cursor.close()
+
+            # Commit any pending changes
+            self.connection.commit()
+
+            # Return the combined results from all result sets
+            return results
+        except mysql.connector.Error as error:
+            print("Error calling stored procedure:", error)
+        finally:
+            self.disconnect()
