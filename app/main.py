@@ -5,7 +5,7 @@ from data_type import DataType
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
-
+import utils.df_utils as utils
 
 app = FastAPI()
 app.add_middleware(
@@ -17,9 +17,6 @@ app.add_middleware(
 )
 
 mydb = db.MySQLHelper()  # MySQLHelper instance
-mydb.connect()  # Establish the database connection
-
-
 csv_manager = mgr.CSVManager()  # CSVManager instance
 
 @app.get("/")
@@ -54,3 +51,23 @@ async def upload_file(file: UploadFile = File(...)):
         return {"filename": file.filename, "saved_path": file_path, "employees": len(employees)}
     else:
         print("No match file")
+
+@app.get("/departments_hired_employees/")
+async def get_department_job_hires():
+    try:
+        data = mydb.get_department_job_hires(2021)
+        print(data)
+        if data is None:
+            return processResult(data, msg=None)
+        else:
+            df = utils.convertToDataFrame(['department','','job','q1','q2','q3','q4'], data)
+            df = utils.parseColumnsToInt(['q1','q2','q3','q4'], df)
+            json = utils.toJson(df)
+            return processResult(json)
+    except:
+        return processResult(None, msg="Error getting data")
+
+def processResult(data, msg = None):
+    if data is None:
+        msg = "Query doesn't retrieve any data"
+    return {"success":data is not None, "error": msg, "data": data}

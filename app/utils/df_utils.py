@@ -1,3 +1,6 @@
+import pandas as pd
+import json
+
 def fillStr(column, default_val=''):
     """
     Fill missing values in a string column with a default value.
@@ -55,3 +58,16 @@ def setIntColumn(column):
     """
     column = column.astype(int)
     return column
+
+def convertToDataFrame(columns, list):
+    df = pd.DataFrame(list, columns=columns)
+    return df
+
+def parseColumnsToInt(columns, df):
+    for c in columns:
+        df[c] = df[c].astype(int)
+    return df
+
+def toJson(df):
+    json_str = df.to_json(orient="records")
+    return json.loads(json_str)
