@@ -31,13 +31,14 @@
         <li><a href="#installation">Section 2: SQL</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
+
+<!-- TEST THE PROJECT FROM THE CLOUD -->
+# TEST THE PROJECT FROM THE CLOUD
+Project - [GCP Project](https://globant-coding-npzwpkdeda-uc.a.run.app/docs)
 
 <!-- GETTING STARTED -->
 # GETTING STARTED
@@ -70,7 +71,7 @@ It is time to run the API, first we will test it locally then on GCP
 You can also run the container where the API is stored (should work the same as running the API directly).
 * shell
   ```sh
-  uvicorn main:app --reload
+  docker start <container_name>
   ```
 
 
